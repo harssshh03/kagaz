@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -113,9 +114,9 @@
 }
 
 body {
-  font-family: var(--font-inter);
+    font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
 }
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -125,7 +126,8 @@ body {
   }
 }
 
-::view-transition-old(root), ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }

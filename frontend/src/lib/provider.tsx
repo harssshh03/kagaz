@@ -1,13 +1,11 @@
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
 
-function Provider({children}:{
-    children : React.ReactNode
-}) {
+function Provider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       {children}
     </ThemeProvider>
-  )
+  );
 }
 
-export default Provider
+export default Provider;

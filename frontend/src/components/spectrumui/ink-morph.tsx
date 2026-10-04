@@ -1,70 +1,73 @@
-import { useEffect, useId, useRef } from "react"
-import { motion, animate } from "framer-motion"
+import { useEffect, useId, useRef } from "react";
+import { motion, animate } from "framer-motion";
 
 type Props = {
-  text?: string
-  intensityFrom?: number 
-  intensityTo?: number 
-  settleMs?: number 
-  colorStart?: string 
-  colorEnd?: string 
-}
+  text?: string;
+  intensityFrom?: number;
+  intensityTo?: number;
+  settleMs?: number;
+  colorStart?: string;
+  colorEnd?: string;
+};
 
 export function InkMorphText({
   text = "Ink Morph",
   intensityFrom = 0.28,
   intensityTo = 0.002,
   settleMs = 2000,
-  colorStart = "#6366f1", 
-  colorEnd = "#10b981", 
+  colorStart = "#6366f1",
+  colorEnd = "#10b981",
 }: Props) {
-  const id = useId().replace(/:/g, "_")
-  const turbRef = useRef<SVGFETurbulenceElement | null>(null)
-  const dispRef = useRef<SVGFEDisplacementMapElement | null>(null)
-  const rafRef = useRef<number | null>(null)
-  const startRef = useRef<number | null>(null)
+  const id = useId().replace(/:/g, "_");
+  const turbRef = useRef<SVGFETurbulenceElement | null>(null);
+  const dispRef = useRef<SVGFEDisplacementMapElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const startRef = useRef<number | null>(null);
 
   useEffect(() => {
-    startRef.current = null
+    startRef.current = null;
     const tick = (t: number) => {
-      if (!startRef.current) startRef.current = t
-      const elapsed = t - (startRef.current ?? 0)
-      const p = Math.min(1, elapsed / settleMs)
+      if (!startRef.current) startRef.current = t;
+      const elapsed = t - (startRef.current ?? 0);
+      const p = Math.min(1, elapsed / settleMs);
 
-      const ease = 1 - Math.pow(1 - p, 3)
-      const freq = intensityFrom + (intensityTo - intensityFrom) * ease
-      const scale = 80 * (1 - ease) 
+      const ease = 1 - Math.pow(1 - p, 3);
+      const freq = intensityFrom + (intensityTo - intensityFrom) * ease;
+      const scale = 80 * (1 - ease);
 
-      if (turbRef.current) turbRef.current.setAttribute("baseFrequency", `${freq} ${freq * 0.9}`)
-      if (dispRef.current) dispRef.current.setAttribute("scale", `${scale}`)
+      if (turbRef.current)
+        turbRef.current.setAttribute("baseFrequency", `${freq} ${freq * 0.9}`);
+      if (dispRef.current) dispRef.current.setAttribute("scale", `${scale}`);
 
-
-      if (turbRef.current) turbRef.current.setAttribute("seed", `${Math.floor(1000 + t * 0.02 + p * 50)}`)
+      if (turbRef.current)
+        turbRef.current.setAttribute(
+          "seed",
+          `${Math.floor(1000 + t * 0.02 + p * 50)}`,
+        );
 
       if (p < 1) {
-        rafRef.current = requestAnimationFrame(tick)
+        rafRef.current = requestAnimationFrame(tick);
       }
-    }
-    rafRef.current = requestAnimationFrame(tick)
+    };
+    rafRef.current = requestAnimationFrame(tick);
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    }
-  }, [intensityFrom, intensityTo, settleMs])
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [intensityFrom, intensityTo, settleMs]);
 
   useEffect(() => {
-
     animate(colorStart, colorEnd, {
-      duration: settleMs / 1000, 
-      ease: [0.2, 0.6, 0.12, 1.0], 
+      duration: settleMs / 1000,
+      ease: [0.2, 0.6, 0.12, 1.0],
       onUpdate: (latest) => {
         if (textRef.current) {
-          textRef.current.style.color = latest
+          textRef.current.style.color = latest;
         }
       },
-    })
-  }, [colorStart, colorEnd, settleMs])
+    });
+  }, [colorStart, colorEnd, settleMs]);
 
-  const textRef = useRef<HTMLSpanElement | null>(null)
+  const textRef = useRef<HTMLSpanElement | null>(null);
 
   return (
     <motion.div
@@ -112,10 +115,9 @@ export function InkMorphText({
         </filter>
       </svg>
 
-
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06]">
         <div className="h-full w-full bg-[radial-gradient(60%_50%_at_50%_45%,#3f3f3f22_0%,transparent_60%)]" />
       </div>
     </motion.div>
-  )
+  );
 }
