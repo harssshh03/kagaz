@@ -9,9 +9,10 @@ const app = new Hono()
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
-  'https://medium.harrsh.xyz',
+  'https://kagaz.harssh.xyz/',
   'https://harrsh.xyz',
-  'https://medium-app-pearl.vercel.app',
+  'https://kagazz-app.vercel.app/'
+  
 ]
 
 app.use(
