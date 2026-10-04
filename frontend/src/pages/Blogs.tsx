@@ -10,7 +10,7 @@ import { useBlogs } from "@/hooks/useBlogs";
 import { useMyBlogs } from "@/hooks/usemyblogs";
 
 interface BlogItem {
-  id: string;
+  id: string | number;
   title: string;
   content: string;
   publishedDate: string;
@@ -56,7 +56,7 @@ function BlogList({
         {filtered.map((blog) => (
           <BlogCard
             key={blog.id}
-            id={blog.id}
+            id={String(blog.id)}
             authorName={blog.author?.name || "Unknown Author"}
             title={blog.title}
             content={blog.content}

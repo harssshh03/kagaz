@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { formatDate, readingTime } from "@/lib/formatdate";
 
 interface Blog {
-  id: string;
+  id: string | number;
   title: string;
   content: string;
   publishedDate: string;
@@ -33,7 +33,7 @@ export default function UserBlogs({ blog }: { blog: Blog }) {
       <div className="mt-8 whitespace-pre-wrap font-serif text-lg leading-8 sm:text-xl sm:leading-9">{blog.content}</div>
 
       <Separator className="my-8" />
-      <Reactions blogId={blog.id} />
+      <Reactions blogId={String(blog.id)} />
     </article>
   );
 }
