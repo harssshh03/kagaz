@@ -1,9 +1,7 @@
-import PostComp from '@/components/post-comp'
+import PostComp from "@/components/post-comp";
 
 const Publish = () => {
-  return (
-    <PostComp/>
-  )
-}
+  return <PostComp />;
+};
 
-export default Publish
+export default Publish;

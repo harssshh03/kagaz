@@ -1,57 +1,39 @@
+import { Link } from "react-router-dom";
+import { DeleteButton } from "@/components/ui/delete-button";
+import { formatDate, readingTime } from "@/lib/formatdate";
 
-import { Dot, User } from 'lucide-react'
-import { Link } from 'react-router-dom'
-
-
-interface BlogsCardType{
-    id : number
-    authorName : string,
-    title :string
-    content : string
-    publishedDate : string
+interface BlogCardProps {
+  id: string;
+  authorName: string;
+  title: string;
+  content: string;
+  publishedDate: string;
+  onDelete?: (id: string) => void;
 }
 
-
-const BlogCard = ({id , authorName,title , content , publishedDate}: BlogsCardType) => {
-
-  const formatDate = new Date(publishedDate).toLocaleDateString("en-IN", {
-    day : "numeric",
-    month : "short",
-    year : "numeric"
-  })
-
+export default function BlogCard({ id, authorName, title, content, publishedDate, onDelete }: BlogCardProps) {
   return (
-    <div>
-    <Link className='pt-10' to={`/blog/${id}`}>
-    <div className='px-4 sm:px-3 border-[#fff]/30 border-b  w-screen max-w-screen-md mb-4 cursor-pointer '>
-        <div className='flex'>  
-          <User className='h-6 w-6'/>
-          <div className='font-light flex justify-center flex-col'>
-          {authorName} 
-          </div>  
-          <div className='flex flex-col justify-center'>
-            <Dot className='h-8 w-8'/>
-          </div>
-          <div className='font-light  flex justify-center flex-col'>
-          {formatDate} 
-          </div>
+    <article className="relative">
+      <Link to={`/blog/${id}`} className="block py-5 pr-12">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+          <span className="flex items-center gap-2">
+            <span className="flex size-6 items-center justify-center rounded-full bg-secondary text-xs font-medium text-secondary-foreground">
+              {authorName[0]?.toUpperCase()}
+            </span>
+            <span className="font-medium text-foreground">{authorName}</span>
+          </span>
+          <time>{formatDate(publishedDate)}</time>
+          <span>{readingTime(content)} min read</span>
+        </div>
+        <h2 className="mt-2 font-serif text-xl font-semibold leading-snug tracking-tight sm:text-2xl">{title}</h2>
+        <p className="mt-1.5 line-clamp-2 font-serif text-base leading-7 text-muted-foreground">{content}</p>
+      </Link>
 
+      {onDelete && (
+        <div className="absolute right-0 top-4 z-10">
+          <DeleteButton onConfirm={() => onDelete(id)} />
         </div>
-        <div className='text-xl pt-2 flex justify-center flex-col font-light'>
-            {title}
-        </div>
-
-        <div className='text-lg font-light'>
-        {content?.length >= 100 ? content.slice(0 , 100) + "..." : content}
-        </div>
-
-        <div className='text-sm mb-2'>
-            {`${Math.ceil(content.length / 100)} minute(s) read `}
-        </div>
-    </div>
-    </Link>
-    </div>
-  )
+      )}
+    </article>
+  );
 }
-
-export default BlogCard

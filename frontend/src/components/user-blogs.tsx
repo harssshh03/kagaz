@@ -1,62 +1,39 @@
-import { Avatar } from "@/components/ui/avatar";
+import { Reactions } from "@/components/reaction";
+import { Separator } from "@/components/ui/separator";
+import { formatDate, readingTime } from "@/lib/formatdate";
 
-interface BlogType {
-  content: string;
+interface Blog {
+  id: string;
   title: string;
-  id: number;
+  content: string;
   publishedDate: string;
-  author: {
-    name: string;
-  };
+  author?: { name: string };
 }
 
-const UserBlogs = ({ blog }: { blog: BlogType }) => {
-  const formatDate = new Date(blog.publishedDate).toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
+export default function UserBlogs({ blog }: { blog: Blog }) {
+  const name = blog.author?.name || "Unknown Author";
 
   return (
-    <div>
-      <div className="flex justify-center px-4 sm:px-6 lg:px-10">
-        <div className="grid grid-cols-1   md:grid-cols-12 w-full pt-32 max-w-screen-xl gap-8">
-          {/* Blog Content */}
-          <div className="md:col-span-8 ">
-            <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold break-words">
-              {blog.title}
-            </div>
-            <div className="pt-3 text-sm sm:text-base">
-              {formatDate}
-            </div>
-            <div className="text-base sm:text-lg font-medium pt-4 break-words">
-              {blog.content}
-            </div>
-          </div>
+    <article>
+      <h1 className="font-serif text-3xl font-semibold leading-tight tracking-tight sm:text-5xl">{blog.title}</h1>
 
-          {/* Author Info */}
-          <div className="md:col-span-4">
-            <div className="text-base sm:text-lg font-semibold">
-              Author
-            </div>
-            <div className="flex pt-3 flex-col gap-2 items-start">
-              <Avatar className="flex justify-center">
-                <div className="text-lg text-center font-semibold">
-                  {blog.author.name.charAt(0)}
-                </div>
-              </Avatar>
-              <div className="font-bold text-2xl sm:text-3xl lg:text-4xl">
-                {blog.author.name}
-              </div>
-              <div className="text-sm sm:text-base pt-2">
-                {blog.title}
-              </div>
-            </div>
-          </div>
+      <div className="mt-5 flex items-center gap-3">
+        <div className="flex size-10 items-center justify-center rounded-full bg-secondary font-medium text-secondary-foreground">
+          {name[0]?.toUpperCase()}
+        </div>
+        <div className="text-sm">
+          <p className="font-medium">{name}</p>
+          <p className="flex gap-3 text-muted-foreground">
+            <time>{formatDate(blog.publishedDate)}</time>
+            <span>{readingTime(blog.content)} min read</span>
+          </p>
         </div>
       </div>
-    </div>
-  );
-};
 
-export default UserBlogs;
+      <div className="mt-8 whitespace-pre-wrap font-serif text-lg leading-8 sm:text-xl sm:leading-9">{blog.content}</div>
+
+      <Separator className="my-8" />
+      <Reactions blogId={blog.id} />
+    </article>
+  );
+}
