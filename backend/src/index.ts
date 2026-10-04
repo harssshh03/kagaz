@@ -9,18 +9,18 @@ const app = new Hono()
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
-  'https://kagaz.harssh.xyz/',
+  'https://kagaz.harssh.xyz',
   'https://harrsh.xyz',
-  'https://kagazz-app.vercel.app/'
-  
+  'https://kagazz-app.vercel.app',
 ]
 
 app.use(
   '/*',
   cors({
     origin: (origin) => {
-      if (!origin) return '*' 
-      return allowedOrigins.includes(origin) ? origin : allowedOrigins[0]
+      if (!origin) return ''
+      const clean = origin.replace(/\/$/, '')
+      return allowedOrigins.includes(clean) ? clean : ''
     },
     credentials: true,
     allowHeaders: ['Authorization', 'Content-Type'],
