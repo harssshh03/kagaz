@@ -1,9 +1,7 @@
-import SignInComp from '@/components/signin-comp'
+import SignInComp from "@/components/signin-comp";
 
 const Signin = () => {
-  return (
-    <SignInComp/>
-  )
-}
+  return <SignInComp />;
+};
 
-export default Signin
+export default Signin;
